@@ -122,6 +122,12 @@ func (s *Supervisor) Terminate(err error) bool {
 			s.wait = time.Second - uptime
 		}
 	}
+
+	// Exit immediately if exit code is zero (0).
+	if (s.process.cmd.ProcessState.ExitCode() == 0) {
+	  return true
+	}
+
 	// behavior based on the retries
 	if s.daemon.cfg.Retries >= 0 {
 		//  0 run only once (don't retry)
